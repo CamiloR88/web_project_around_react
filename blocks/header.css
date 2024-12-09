@@ -1,0 +1,13 @@
+.header__container {
+  max-width: 880px;
+  min-height: 74px;
+  margin: auto;
+  padding-top: 45px;
+  border-bottom-style: ridge;
+  border-bottom-color: #545454;
+}
+@media screen and (max-width: 620px) {
+  .header__container {
+    padding-top: 28px;
+  }
+}

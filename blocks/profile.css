@@ -1,0 +1,19 @@
+.profile {
+  max-width: 880px;
+  margin: auto;
+  padding-top: 40px;
+  display: grid;
+  grid-template-columns: 120px auto 150px;
+  position: relative;
+}
+@media screen and(max-width:920px) {
+}
+@media screen and (max-width: 720px) {
+  .profile {
+    max-width: 282px;
+    padding-top: 42px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
