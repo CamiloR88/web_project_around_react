@@ -34,8 +34,20 @@ margin:24px auto;
   background-color: #fff;
   border-radius: 3%;
   width: 28rem;
-  min-height: 330px;
+  max-height: 330px;
+
 }
+.popup__content_content_image {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 6;
+  background-color: #fff;
+  border-radius: 3%;
+  width: 28rem;
+  max-height: 330px;
+}
+
 .popup__close-btn {
   position: absolute;
   right: -40px;
@@ -51,7 +63,7 @@ margin:24px auto;
   justify-content: space-evenly;
   background-color: #fff;
   border-radius: 3%;
-  min-height: 330px;
+  min-height: 230px;
 }
 .popup__form-small {
   display: flex;
@@ -59,7 +71,8 @@ margin:24px auto;
   align-items: center;
   justify-content: space-evenly;
   background-color: #fff;
-  min-height: 181px;
+  border-radius: 3%;
+  min-height: 140px;
 }
 .popup__form-medium {
   display: flex;
@@ -130,39 +143,9 @@ margin:24px auto;
   max-width: 75vw;
   max-height: 75vh;
 }
-.popup__image::backdrop {
-  background-color: #000;
-  opacity: 0.6;
-}
-.popup__image-render {
-  max-width: 75vw;
-  max-height: 75vh;
-}
-.popup__image-name {
-  position: absolute;
-  bottom: -25px;
-  color: #fff;
-}
-.popup__confirmation {
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  overflow: visible;
-  border: none;
-  border-radius: 2%;
-  width: 28rem;
-  min-height: 181px;
-}
-.popup__avatar {
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  overflow: visible;
-  border: none;
-  border-radius: 2%;
-  width: 28rem;
-  min-height: 272px;
-}
+
+
+
 @media screen and (max-width: 550px) {
   .popup__close-btn {
     position: absolute;

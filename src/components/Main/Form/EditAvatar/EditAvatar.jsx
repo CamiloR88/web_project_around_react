@@ -1,6 +1,6 @@
 export default function EditAvatar(){
   return( <form
-          className="popup__form-medium"
+          className="popup__form-small"
           method="dialog"
           id="change-avatar_form"
           noValidate

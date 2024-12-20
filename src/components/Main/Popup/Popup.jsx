@@ -4,12 +4,14 @@ export default function Popup(props){
   return(
          <div className="popup" open>
           <div className="popup__overlay"></div>
-          <div className="popup__content">
+          <div   className={`popup__content ${
+          !title ? "popup__content_content_image" : ""
+        }`}>
         <button aria-label="Close modal" type="button" className="popup__close-btn" onClick={onClose} >
           <img src={xBtn} alt="boton de cerrar" />
         </button>
 
-          <h3 className="popup__title">{title}</h3>
+           {title && <h3 className="popup__title">{title}</h3>}
           {children}
 
           </div>
