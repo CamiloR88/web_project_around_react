@@ -1,4 +1,4 @@
-import xBtn from "../../../assets/images/popup-close.svg"
+import xBtn from "../../images/popup-close.svg"
 export default function Popup(props){
   const{onClose,title,children,}=props;
   return(
