@@ -1,7 +1,10 @@
 
+import React from "react";
+
 export default function ImagePopup(props) {
 
-console.log(props)
+
+
   return (
    <>
    <img src={props.selectedCard?.link}alt="" />
@@ -9,3 +12,4 @@ console.log(props)
    </>
   );
 }
+
