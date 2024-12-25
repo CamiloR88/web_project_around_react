@@ -42,8 +42,9 @@ margin:24px auto;
   flex-direction: column;
   position: relative;
   z-index: 6;
-  background-color: #fff;
+  background-color:transparent;
   border-radius: 3%;
+  max-height: 75vh;
 
 }
 

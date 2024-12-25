@@ -1,11 +1,9 @@
-
- 
  import trashBin from "../../images/remove-icon.svg";
 
 export default function Card({handleOpenPopup, card}) {
   function handleClick() {
-      
-    handleOpenPopup(card);    
+
+    handleOpenPopup(card);
   }
 
   return (

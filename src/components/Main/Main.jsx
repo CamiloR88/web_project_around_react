@@ -12,7 +12,7 @@ import ImagePopup from "../ImagePopup/ImagePopup";
 
 export default function Main() {
   const [popup, setPopup] = useState(null);
-  const [isOpenImagePopup, setIsOpenImagePopup] = useState(true);
+  const [isOpenImagePopup, setIsOpenImagePopup] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
 
   const newCardPopup = { title: "Nuevo lugar", children: <NewCard /> };
@@ -25,7 +25,6 @@ export default function Main() {
     children: <EditAvatar />,
   };
 
-  const imagePopup = { children: <ImagePopup selectedCard={selectedCard} /> };
 
   const cards = [
     {
