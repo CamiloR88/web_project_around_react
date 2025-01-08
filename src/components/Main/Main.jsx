@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
+import { api } from "../../utils/api";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import avatar from "../../images/Jacques-photo.jpg";
 import editProfileIcon from "../../images/pencil.svg";
 import addCardIcon from "../../images/plus.svg";
@@ -14,6 +16,31 @@ export default function Main() {
   const [popup, setPopup] = useState(null);
   const [isOpenImagePopup, setIsOpenImagePopup] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
+  const [cards, setCards] = useState([]);
+  const { currentUser } = useContext(CurrentUserContext);
+  // const [currentUser, setCurrentUser] = useState({});
+  async function handleCardLike(card) {
+    const isLiked = card.isLiked;
+    await api
+      .setLike(card._id, !islked)
+      .then((newCard) => {
+        setCards((state) =>
+          state.map((currentCard) =>
+            currentCard._id === card._id ? newCard : currentCard,
+          ),
+        );
+      })
+      .catch((error) => console.error(error));
+  }
+
+  useEffect(() => {
+    api.getInitialCards().then((data) => {
+      setCards(data);
+    });
+    api.getUserInfo().then((data) => {
+      setCurrentUser(data);
+    });
+  }, []);
 
   const newCardPopup = { title: "Nuevo lugar", children: <NewCard /> };
   const editProfilePopup = {
@@ -24,26 +51,6 @@ export default function Main() {
     title: "Cambiar foto de perfil",
     children: <EditAvatar />,
   };
-
-
-  const cards = [
-    {
-      isLiked: false,
-      _id: "5d1f0611d321eb4bdcd707dd",
-      name: "Yosemite Valley",
-      link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
-      owner: "5d1f0611d321eb4bdcd707dd",
-      createdAt: "2019-07-05T08:10:57.741Z",
-    },
-    {
-      isLiked: false,
-      _id: "5d1f064ed321eb4bdcd707de",
-      name: "Lake Louise",
-      link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
-      owner: "5d1f0611d321eb4bdcd707dd",
-      createdAt: "2019-07-05T08:11:58.324Z",
-    },
-  ];
 
   function handleOpenPopup(popup) {
     setPopup(popup);
@@ -103,6 +110,7 @@ export default function Main() {
               key={card._id}
               card={card}
               handleOpenPopup={handleCardClick}
+              onCardLike={handleCardlike}
             />
           ))}
         </ul>
