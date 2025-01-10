@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { api } from "../../utils/api";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-import avatar from "../../images/Jacques-photo.jpg";
 import editProfileIcon from "../../images/pencil.svg";
 import addCardIcon from "../../images/plus.svg";
 import changeAvatarIcon from "../../images/big-pencil.svg";
@@ -14,11 +13,9 @@ import ImagePopup from "../ImagePopup/ImagePopup";
 
 export default function Main() {
   const [popup, setPopup] = useState(null);
-  const [isOpenImagePopup, setIsOpenImagePopup] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
   const [cards, setCards] = useState([]);
   const { currentUser } = useContext(CurrentUserContext);
-  // const [currentUser, setCurrentUser] = useState({});
   async function handleCardLike(card) {
     const isLiked = card.isLiked;
     await api
@@ -37,17 +34,20 @@ export default function Main() {
     api.getInitialCards().then((data) => {
       setCards(data);
     });
-    api.getUserInfo().then((data) => {
-      setCurrentUser(data);
-    });
   }, []);
-
-  const newCardPopup = { title: "Nuevo lugar", children: <NewCard /> };
+  console.log(selectedCard);
+  const showImagePopup = {
+    children: <ImagePopup selectedCard={selectedCard} />,
+  };
+  const newCardPopup = {
+    title: "Nuevo lugar",
+    children: <NewCard />,
+  };
   const editProfilePopup = {
     title: "Editar perfil",
     children: <EditProfile />,
   };
-  const changeAvatar = {
+  const changeAvatarPopup = {
     title: "Cambiar foto de perfil",
     children: <EditAvatar />,
   };
@@ -60,9 +60,8 @@ export default function Main() {
   }
 
   const handleCardClick = (card) => {
-    console.log("card", card);
     setSelectedCard(card);
-    setIsOpenImagePopup(true);
+    handleOpenPopup(showImagePopup);
   };
 
   return (
@@ -72,15 +71,15 @@ export default function Main() {
           className="profile__avatar-container"
           id="img-avatar"
           onClick={() => {
-            handleOpenPopup(changeAvatar);
+            handleOpenPopup(changeAvatarPopup);
           }}
         >
-          <img className="profile__avatar" src={avatar} alt="" />
+          <img className="profile__avatar" src={currentUser.avatar} alt="" />
           <img src={changeAvatarIcon} alt="" className="profile__avatar-edit" />
         </button>
         <div className="profile__info">
           <div className="profile__content">
-            <div className="profile__name">Jacques Cousteau</div>
+            <div className="profile__name">{currentUser.name}</div>
 
             <button
               type="submit"
@@ -90,7 +89,7 @@ export default function Main() {
               <img src={editProfileIcon} alt="boton de editar" />
             </button>
           </div>
-          <div className="profile__about">Explorer</div>
+          <div className="profile__about">{currentUser.about}</div>
         </div>
         <button
           className="profile__add-btn"
@@ -110,7 +109,7 @@ export default function Main() {
               key={card._id}
               card={card}
               handleOpenPopup={handleCardClick}
-              onCardLike={handleCardlike}
+              onCardLike={handleCardLike}
             />
           ))}
         </ul>
@@ -118,11 +117,6 @@ export default function Main() {
       {popup && (
         <Popup onClose={handleClosePopup} title={popup.title}>
           {popup.children}
-        </Popup>
-      )}
-      {isOpenImagePopup && (
-        <Popup onClose={() => setIsOpenImagePopup(false)}>
-          <ImagePopup selectedCard={selectedCard} />
         </Popup>
       )}
     </main>

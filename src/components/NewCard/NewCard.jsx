@@ -1,4 +1,9 @@
+import { useState, useContext } from "react";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+
 export default function NewCard() {
+  const { currentUser } = useContext(CurrentUserContext);
+  const [newCard, setNewCard] = useState();
   return (
     <form className="popup__form" method="dialog" id="newCardForm" noValidate>
       <input

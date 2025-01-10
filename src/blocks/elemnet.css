@@ -30,7 +30,7 @@
 }
 .element__like {
   border: none;
-  background: url("../src/assets/images/like-off.svg") center no-repeat;
+  background: url("../images/like-off.svg") center no-repeat;
   background-size: 100%;
   width: 21px;
   height: 21px;
@@ -41,8 +41,7 @@
   cursor: pointer;
 }
 .element__like_active {
-  opacity: 1;
-  background: url("../src/assets/images/like-on.svg") center no-repeat;
+  background: url("../images/like-on.svg") center no-repeat;
   background-size: 100%;
 }
 

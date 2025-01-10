@@ -15,7 +15,7 @@ function App() {
   }, []);
   const handleUpdateUser = (data) => {
     (async () => {
-      await api.setUserInfo(data).then((newData) => {
+      await api.setProfileInfo(data).then((newData) => {
         setCurrentUser(newData);
       });
     })();
