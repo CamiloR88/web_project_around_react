@@ -6,6 +6,13 @@ import { CurrentUserContext } from "./contexts/CurrentUserContext.js";
 import { api } from "./utils/api.js";
 function App() {
   const [currentUser, setCurrentUser] = useState({});
+  const [popup, setPopup] = useState(null);
+  function handleOpenPopup(popup) {
+    setPopup(popup);
+  }
+  function handleClosePopup() {
+    setPopup(null);
+  }
   useEffect(() => {
     (async () => {
       await api.getUserInfo().then((data) => {
@@ -17,6 +24,7 @@ function App() {
     (async () => {
       await api.setProfileInfo(data).then((newData) => {
         setCurrentUser(newData);
+        handleClosePopup();
       });
     })();
   };
@@ -25,7 +33,11 @@ function App() {
       <div className="page">
         <div className="main">
           <Header />
-          <Main />
+          <Main
+            onOpenPopup={handleOpenPopup}
+            onClosePopup={handleClosePopup}
+            popup={popup}
+          />
           <Footer />
         </div>
       </div>

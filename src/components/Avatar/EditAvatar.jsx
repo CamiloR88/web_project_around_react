@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
-export default function EditAvatar() {
+export default function EditAvatar({ onSubmit }) {
   const { currentUser, handleUpdateUser } = useContext(CurrentUserContext);
   const [avatar, setAvatar] = useState(currentUser.avatar);
 
@@ -10,7 +10,8 @@ export default function EditAvatar() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleUpdateUser({ avatar });
+    handleUpdateUser({ avatar: avatar });
+    onSubmit(avatar);
   };
   return (
     <form

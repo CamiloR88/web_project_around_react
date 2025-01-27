@@ -11,23 +11,65 @@ import EditProfile from "../EditProfile/EditProfile";
 import EditAvatar from "../Avatar/EditAvatar";
 import ImagePopup from "../ImagePopup/ImagePopup";
 
-export default function Main() {
-  const [popup, setPopup] = useState(null);
-  const [selectedCard, setSelectedCard] = useState({});
+export default function Main(props) {
   const [cards, setCards] = useState([]);
-  const { currentUser } = useContext(CurrentUserContext);
+  const { onOpenPopup, onClosePopup, popup } = props;
+  const { currentUser, handleUpdateUser } = useContext(CurrentUserContext);
   async function handleCardLike(card) {
     const isLiked = card.isLiked;
-    await api
-      .setLike(card._id, !islked)
-      .then((newCard) => {
-        setCards((state) =>
-          state.map((currentCard) =>
-            currentCard._id === card._id ? newCard : currentCard,
-          ),
-        );
+    if (!isLiked) {
+      await api
+        .setLike(card._id)
+        .then((newCard) => {
+          setCards((state) =>
+            state.map((currentCard) =>
+              currentCard._id === card._id ? newCard : currentCard,
+            ),
+          );
+        })
+        .catch((error) => console.error(error));
+    } else {
+      await api
+        .rmvLike(card._id)
+        .then((newCard) => {
+          setCards((state) =>
+            state.map((currentCard) =>
+              currentCard._id === card._id ? newCard : currentCard,
+            ),
+          );
+        })
+        .catch((error) => console.error(error));
+    }
+  }
+  function handleUpdateAvatar(avatar) {
+    api
+      .setProfileAvatar(avatar)
+      .then((updatedUser) => {
+        handleUpdateUser({
+          avatar: updatedUser.avatar,
+          name: updatedUser.name,
+          about: updatedUser.about,
+        });
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        console.error("Error updating avatar:", error);
+      });
+  }
+
+  function handleNewCard(event) {
+    event.preventDefault();
+    const form = event.target;
+    const title = form.title.value;
+    const link = form.link.value;
+    api
+      .storeCard(title, link)
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+        onClosePopup();
+      })
+      .catch((error) => {
+        console.error("Error creating card:", error);
+      });
   }
 
   useEffect(() => {
@@ -35,13 +77,12 @@ export default function Main() {
       setCards(data);
     });
   }, []);
-  console.log(selectedCard);
-  const showImagePopup = {
+  const imagePopup = (selectedCard) => ({
     children: <ImagePopup selectedCard={selectedCard} />,
-  };
+  });
   const newCardPopup = {
     title: "Nuevo lugar",
-    children: <NewCard />,
+    children: <NewCard onSubmit={handleNewCard} />,
   };
   const editProfilePopup = {
     title: "Editar perfil",
@@ -49,19 +90,11 @@ export default function Main() {
   };
   const changeAvatarPopup = {
     title: "Cambiar foto de perfil",
-    children: <EditAvatar />,
+    children: <EditAvatar onSubmit={handleUpdateAvatar} />,
   };
 
-  function handleOpenPopup(popup) {
-    setPopup(popup);
-  }
-  function handleClosePopup() {
-    setPopup(null);
-  }
-
   const handleCardClick = (card) => {
-    setSelectedCard(card);
-    handleOpenPopup(showImagePopup);
+    onOpenPopup(imagePopup(card));
   };
 
   return (
@@ -71,10 +104,14 @@ export default function Main() {
           className="profile__avatar-container"
           id="img-avatar"
           onClick={() => {
-            handleOpenPopup(changeAvatarPopup);
+            onOpenPopup(changeAvatarPopup);
           }}
         >
-          <img className="profile__avatar" src={currentUser.avatar} alt="" />
+          <img
+            className="profile__avatar"
+            src={currentUser.avatar}
+            alt="avatar"
+          />
           <img src={changeAvatarIcon} alt="" className="profile__avatar-edit" />
         </button>
         <div className="profile__info">
@@ -84,7 +121,7 @@ export default function Main() {
             <button
               type="submit"
               className="profile__edit-btn"
-              onClick={() => handleOpenPopup(editProfilePopup)}
+              onClick={() => onOpenPopup(editProfilePopup)}
             >
               <img src={editProfileIcon} alt="boton de editar" />
             </button>
@@ -93,7 +130,7 @@ export default function Main() {
         </div>
         <button
           className="profile__add-btn"
-          onClick={() => handleOpenPopup(newCardPopup)}
+          onClick={() => onOpenPopup(newCardPopup)}
         >
           <img
             className="profile__add-btn_svg"
@@ -115,7 +152,7 @@ export default function Main() {
         </ul>
       </section>
       {popup && (
-        <Popup onClose={handleClosePopup} title={popup.title}>
+        <Popup onClose={onClosePopup} title={popup.title}>
           {popup.children}
         </Popup>
       )}

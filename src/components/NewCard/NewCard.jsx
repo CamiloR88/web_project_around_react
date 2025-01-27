@@ -1,11 +1,17 @@
 import { useState, useContext } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
-export default function NewCard() {
+export default function NewCard({ onSubmit }) {
   const { currentUser } = useContext(CurrentUserContext);
   const [newCard, setNewCard] = useState();
   return (
-    <form className="popup__form" method="dialog" id="newCardForm" noValidate>
+    <form
+      className="popup__form"
+      method="dialog"
+      id="newCardForm"
+      noValidate
+      onSubmit={onSubmit}
+    >
       <input
         type="text"
         className="popup__input"
