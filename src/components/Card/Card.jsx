@@ -1,17 +1,31 @@
-import trashBin from "../../images/remove-icon.svg";
+//import trashBin from "../../images/remove-icon.svg";
+import RemoveCard from "../RemoveCrad/RemoveCard";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { useContext } from "react";
 
-export default function Card({ handleOpenPopup, card, onCardLike }) {
+export default function Card({
+  handleOpenPopup,
+  card,
+  onCardLike,
+  onCardDelete,
+}) {
   const { currentUser } = useContext(CurrentUserContext);
   function handleClick() {
     handleOpenPopup(card);
-    console.log(card);
+  }
+  function handleDeleteClick() {
+    onCardDelete(card);
   }
 
   return (
     <li className="elements__element">
-      <img className="element__remove" src={trashBin} />
+      <RemoveCard onCardDelete={handleDeleteClick} />
+      {/* <img
+        className="element__remove"
+        src={trashBin}
+        onClick={() => onCardDelete(card)}
+      /> */}
+
       <img className="element__img" src={card.link} onClick={handleClick} />
       <div className="element__description">
         <div className="element__name">{card.name}</div>

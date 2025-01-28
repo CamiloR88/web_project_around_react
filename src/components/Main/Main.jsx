@@ -15,6 +15,21 @@ export default function Main(props) {
   const [cards, setCards] = useState([]);
   const { onOpenPopup, onClosePopup, popup } = props;
   const { currentUser, handleUpdateUser } = useContext(CurrentUserContext);
+  async function handleCardDelete(card) {
+    if (currentUser === card.user) {
+      await api
+        .rmvCard(card._id)
+        .then(() => {
+          setCards((state) =>
+            state.filter((currentCard) => currentCard._id !== card._id),
+          );
+        })
+        .catch((error) => console.error(error));
+    } else {
+      console.error("No estas autorizado a eliminar esta tarjeta");
+    }
+  }
+
   async function handleCardLike(card) {
     const isLiked = card.isLiked;
     if (!isLiked) {
@@ -147,6 +162,7 @@ export default function Main(props) {
               card={card}
               handleOpenPopup={handleCardClick}
               onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete}
             />
           ))}
         </ul>
